@@ -1,0 +1,1 @@
+This public portfolio demo does not generate or ship real audio. The workspace card points here as an honest mock asset boundary.

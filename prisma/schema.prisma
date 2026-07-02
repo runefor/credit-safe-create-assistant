@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum JobStatus {
+  queued
+  running
+  completed
+  failed
+}
+
+model Brief {
+  id                String          @id @default(cuid())
+  prompt            String
+  genre             String
+  useCase           String
+  commercialIntent  Boolean         @default(false)
+  styleTagsJson     String
+  validationScore   Int
+  warningsJson      String
+  suggestionsJson   String
+  estimatedCredits  Int
+  createdAt         DateTime        @default(now())
+  generationJobs    GenerationJob[]
+}
+
+model GenerationJob {
+  id              String    @id @default(cuid())
+  briefId         String
+  brief           Brief     @relation(fields: [briefId], references: [id], onDelete: Cascade)
+  idempotencyKey  String    @unique
+  status          String
+  attempt         Int       @default(1)
+  demoOutcome     String    @default("success")
+  timelineJson    String
+  errorCode       String?
+  resultTrackId   String?   @unique
+  resultTrack     Track?    @relation("JobResultTrack", fields: [resultTrackId], references: [id])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  tracks          Track[]   @relation("TrackJob")
+
+  @@index([briefId])
+  @@index([status])
+}
+
+model Track {
+  id             String          @id @default(cuid())
+  jobId          String          @unique
+  job            GenerationJob   @relation("TrackJob", fields: [jobId], references: [id], onDelete: Cascade)
+  resultForJob   GenerationJob?  @relation("JobResultTrack")
+  title          String
+  tagsJson       String
+  licenseBadge   String
+  mockAudioUrl   String
+  favorite       Boolean         @default(false)
+  versionNote    String
+  createdAt      DateTime        @default(now())
+}
