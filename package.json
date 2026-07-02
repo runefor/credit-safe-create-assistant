@@ -1,7 +1,26 @@
 {
   "name": "credit-safe-create-assistant",
   "version": "0.1.0",
+  "description": "Public-safe full-stack demo for credit-aware AI music creation flows.",
   "private": true,
+  "keywords": [
+    "ai-music",
+    "nextjs",
+    "typescript",
+    "prisma",
+    "zod",
+    "portfolio",
+    "idempotency",
+    "async-jobs"
+  ],
+  "homepage": "https://github.com/runefor/credit-safe-create-assistant#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/runefor/credit-safe-create-assistant.git"
+  },
+  "bugs": {
+    "url": "https://github.com/runefor/credit-safe-create-assistant/issues"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "DATABASE_URL=file:./dev.db prisma generate && DATABASE_URL=file:./dev.db next build",
